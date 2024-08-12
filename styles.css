@@ -5,6 +5,7 @@
   --primary-color-dark: #00488E;
   --primary-color-light: #e9f7f7;
   --secondary-color: rgb(255, 242, 0);
+  --secondary-color-dark: rgb(236, 227, 43);
   --text-dark: #333333;
   --text-light: #767268;
   --white: #ffffff;
@@ -16,7 +17,6 @@
   margin: 0;
   box-sizing: border-box;
 }
-
 
 .section__container {
   max-width: var(--max-width);
@@ -37,7 +37,7 @@
   border: none;
   font-size: 1rem;
   white-space: nowrap;
-  color: var(--white);
+  color: #00488E;
   background-color: var(--secondary-color);
   border-radius: 5px;
   cursor: pointer;
@@ -156,12 +156,12 @@ header {
 }
 
 .form__btn {
-  background-color: var(--primary-color);
+  background-color: var(--secondary-color);
   transition: 0.3s;
 }
 
 .form__btn:hover {
-  background-color: var(--primary-color-dark);
+  background-color: var(--secondary-color-dark);
 }
 
 .header__form h4 {
