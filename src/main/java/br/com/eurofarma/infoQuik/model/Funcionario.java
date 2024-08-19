@@ -35,8 +35,15 @@ public class Funcionario {
     @Column(nullable = false)
     private String senha;
 
-    @OneToMany(mappedBy = "funcionario")
-    private List<Treinamento> treinamentos = new ArrayList<>();
+//    @OneToMany(mappedBy = "funcionario")
+//    private List<Treinamento> treinamentos = new ArrayList<>();
+
+//    @ManyToOne
+//    @JoinColumn(name = "treinamento_id", nullable = false)
+//    private Treinamento treinamento;
+
+    @ManyToMany(mappedBy = "funcionarios", fetch = FetchType.EAGER)
+    private Set<Treinamento> treinamentos = new HashSet<>();
 
     @ManyToOne
     @JoinColumn(name = "departamento_id", nullable = false)

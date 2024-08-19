@@ -1,0 +1,29 @@
+<!DOCTYPE html>
+<html lang="pt-br" layout:decorate="~{template.html}"
+      xmlns:layout="http://www.ultraq.net.nz/thymeleaf/layout"
+      xmlns:th="http://thymeleaf.org">
+
+<!--xmlns:th -> declarando a variável-->
+<!--importa na página o thymeleaf e referenciada pela variável th -->
+<!--layout:decorate="~{template.html}"> definindo que vai usar
+    o sinal ~ referencia arquivo-->
+
+<!--código omitido-->
+<head>
+  <!-- declarada no template
+       <meta charset="UTF-8"> -->
+  <title>Home</title>
+</head>
+<body>
+<div layout:fragment="conteudo">
+  <div class="container">
+    <div class="row">
+      <div class="col">
+        <h2 th:text="${msg}"></h2>
+        <h2 th:text="${user.getDepartamento().getNome()}"></h2>
+      </div>
+    </div>
+  </div>
+</div>
+</body>
+</html>

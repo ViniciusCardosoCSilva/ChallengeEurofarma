@@ -40,14 +40,14 @@ public class TreinamentoDTO {
     private String corpo_texto;
 
     @NotBlank(message = "Campo requerido")
-    private String tipo;
+    private Tipo tipo;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
     private List<Tag> tags = new ArrayList<>();
     private Treinador treinador;
-    private Funcionario funcionario;
+    private List<Funcionario> funcionarios = new ArrayList<>();
     private List<ListaDePresenca> listaDePresencaList = new ArrayList<>();
     private List<Departamento> departamentos = new ArrayList<>();
 
@@ -62,7 +62,7 @@ public class TreinamentoDTO {
         this.status = entity.getStatus();
         this.tags.addAll(entity.getTags());
         this.treinador = entity.getTreinador();
-        this.funcionario = entity.getFuncionario();
+        this.funcionarios.addAll(entity.getFuncionarios());
         this.listaDePresencaList.addAll(entity.getListaDePresencaList());
         this.departamentos.addAll(entity.getDepartamentos());
     }

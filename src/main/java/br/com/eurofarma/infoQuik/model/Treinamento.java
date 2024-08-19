@@ -35,8 +35,9 @@ public class Treinamento {
     @Column(nullable = false)
     private String corpo_texto;
 
+    @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
-    private String tipo;
+    private Tipo tipo;
 
     @Enumerated(value = EnumType.STRING)
     @Column(nullable = false)
@@ -49,12 +50,14 @@ public class Treinamento {
     @JoinColumn(name = "treinador_id", nullable = false)
     private Treinador treinador;
 
-    @ManyToOne
-    @JoinColumn(name = "funcionario_id", nullable = false)
-    private Funcionario funcionario;
-
     @OneToMany(mappedBy = "treinamento")
     private List<ListaDePresenca> listaDePresencaList = new ArrayList<>();
+
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_treinamento_funcionario",
+            joinColumns = @JoinColumn(name = "treinamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "funcionario_id"))
+    private Set<Funcionario> funcionarios = new HashSet<>();
 
     @ManyToMany(fetch = FetchType.EAGER)
     @JoinTable(name = "tb_treinamento_departamento",
