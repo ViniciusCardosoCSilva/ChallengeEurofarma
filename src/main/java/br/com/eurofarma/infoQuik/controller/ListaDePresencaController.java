@@ -7,13 +7,17 @@ import br.com.eurofarma.infoQuik.service.FuncionarioService;
 import br.com.eurofarma.infoQuik.service.ListaDePresencaService;
 import br.com.eurofarma.infoQuik.service.TreinamentoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Controller
@@ -22,69 +26,38 @@ public class ListaDePresencaController {
     @Autowired
     private ListaDePresencaService service;
 
-    @Autowired
-    private TreinamentoService treinamentoService;
-
-    @Autowired
-    private FuncionarioService funcionarioService;
-
-    @ModelAttribute("funcionarios")
-    public List<FuncionarioDTO> funcionarios(){
-        return funcionarioService.findAll();
-    }
-
-    @ModelAttribute("treinamentos")
-    public List<TreinamentoDTO> treinamentos() {
-        return treinamentoService.findAll();
-    }
-
-    @GetMapping("/form")
-    public String loadForm(Model model) {
-        model.addAttribute("listaDePresencaDTO", new ListaDePresencaDTO());
-        return "listaDePresenca/novo-listaDePresenca";
-    }
-
-    @PostMapping()
-    public String insert(@Valid ListaDePresencaDTO listaDePresencaDTO,
-                         BindingResult result,
-                         RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            return "listaDePresenca/novo-listaDePresenca";
-        }
-        listaDePresencaDTO = service.insert(listaDePresencaDTO);
-        attributes.addFlashAttribute("mensagem", "Lista De Presenca salvo com sucesso");
-        return "redirect:/listaDePresencas/form";
-    }
-
-    @GetMapping()
-    public String findAll(Model model) {
-        model.addAttribute("listaDePresencas", service.findAll());
-        return "/listaDePresenca/listar-listaDePresencas";
+    @GetMapping
+    public ResponseEntity<List<ListaDePresencaDTO>> findAll() {
+        List<ListaDePresencaDTO> dto = service.findAll();
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        ListaDePresencaDTO listaDePresencaDTO = service.findById(id);
-        model.addAttribute("listaDePresencaDTO", listaDePresencaDTO);
-        return "/listaDePresenca/editar-listaDePresenca";
+    public ResponseEntity<ListaDePresencaDTO> findById(@PathVariable Long id) {
+        ListaDePresencaDTO dto = service.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
+    @PostMapping
+    public ResponseEntity<ListaDePresencaDTO> insert(@Valid ListaDePresencaDTO dto) {
+
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
+    }
+
+
     @PutMapping("/{id}")
-    public String update(@PathVariable("id") Long id,
-                         @Valid ListaDePresencaDTO listaDePresencaDTO,
-                         BindingResult result) {
-        if (result.hasErrors()) {
-            listaDePresencaDTO.setId(id);
-            return "/listaDePresenca/editar-listaDePresenca";
-        }
-        service.update(id, listaDePresencaDTO);
-        return "redirect:/listaDePresencas";
+    public ResponseEntity<ListaDePresencaDTO> update(@PathVariable @NotNull Long id,
+                                                @Valid ListaDePresencaDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id, Model model) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
-        return "redirect:/listaDePresencas";
+        return ResponseEntity.noContent().build();
     }
 
 }

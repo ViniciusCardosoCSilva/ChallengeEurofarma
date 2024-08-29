@@ -7,82 +7,75 @@ import br.com.eurofarma.infoQuik.service.DepartamentoService;
 import br.com.eurofarma.infoQuik.service.FuncionarioService;
 import br.com.eurofarma.infoQuik.service.TreinamentoService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
-@Controller
+@RestController
 @RequestMapping("/departamentos")
 public class DepartamentoController {
+
     @Autowired
     private DepartamentoService service;
 
-    @Autowired
-    private FuncionarioService funcionarioService;
+//    @Autowired
+//    private FuncionarioService funcionarioService;
+//
+//    @Autowired
+//    private TreinamentoService treinamentoService;
+//
+//    public List<TreinamentoDTO> treinamentos(){
+//        return treinamentoService.findAll();
+//    }
+//
+//    public List<FuncionarioDTO> funcionarios() {
+//        return funcionarioService.findAll();
+//    }
 
-    @Autowired
-    private TreinamentoService treinamentoService;
+    @GetMapping
+    public ResponseEntity<List<DepartamentoDTO>> findAll() {
 
-    @ModelAttribute("treinamentos")
-    public List<TreinamentoDTO> treinamentos(){
-        return treinamentoService.findAll();
-    }
+        List<DepartamentoDTO> dto = service.findAll();
 
-    @ModelAttribute("funcionarios")
-    public List<FuncionarioDTO> funcionarios() {
-        return funcionarioService.findAll();
-    }
-
-    @GetMapping("/form")
-    public String loadForm(Model model) {
-        model.addAttribute("departamentoDTO", new DepartamentoDTO());
-        return "departamento/novo-departamento";
-    }
-    @PostMapping()
-    public String insert(@Valid DepartamentoDTO departamentoDTO,
-                         BindingResult result,
-                         RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            return "departamento/novo-departamento";
-        }
-        departamentoDTO = service.insert(departamentoDTO);
-        attributes.addFlashAttribute("mensagem", "Departamento salvo com sucesso");
-        return "redirect:/departamentos/form";
-    }
-
-    @GetMapping()
-    public String findAll(Model model) {
-        model.addAttribute("departamentos", service.findAll());
-        return "/departamento/listar-departamentos";
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        DepartamentoDTO departamentoDTO = service.findById(id);
-        model.addAttribute("departamentoDTO", departamentoDTO);
-        return "/departamento/editar-departamento";
+    public ResponseEntity<DepartamentoDTO> findById(@PathVariable Long id) {
+        DepartamentoDTO dto = service.findById(id);
+        return ResponseEntity.ok(dto);
+    }
+
+    @PostMapping
+    public ResponseEntity<DepartamentoDTO> insert(@Valid DepartamentoDTO dto) {
+
+        dto = service.insert(dto);
+
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
+
+        return ResponseEntity.created(uri).body(dto);
     }
 
     @PutMapping("/{id}")
-    public String update(@PathVariable("id") Long id,
-                         @Valid DepartamentoDTO departamentoDTO,
-                         BindingResult result) {
-        if (result.hasErrors()) {
-            departamentoDTO.setId(id);
-            return "/departamento/editar-departamento";
-        }
-        service.update(id, departamentoDTO);
-        return "redirect:/departamentos";
+    public ResponseEntity<DepartamentoDTO> update(@PathVariable @NotNull Long id,
+                         @Valid DepartamentoDTO dto) {
+
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id, Model model) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
-        return "redirect:/departamentos";
+        return ResponseEntity.noContent().build();
     }
 }

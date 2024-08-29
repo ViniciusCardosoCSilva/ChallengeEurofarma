@@ -3,69 +3,58 @@ package br.com.eurofarma.infoQuik.controller;
 import br.com.eurofarma.infoQuik.dto.TreinadorDTO;
 import br.com.eurofarma.infoQuik.service.TreinadorService;
 import jakarta.validation.Valid;
+import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
 import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.servlet.mvc.support.RedirectAttributes;
+import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
+import java.net.URI;
 import java.util.List;
 
 @Controller
 @RequestMapping("/treinadors")
 public class TreinadorController {
     @Autowired
+
     private TreinadorService service;
 
-    @GetMapping("/form")
-    public String loadFormTreinador(Model model) {
-        model.addAttribute("treinadorDTO", new TreinadorDTO());
-        return "treinador/nova-treinador";
-    }
-
-    @PostMapping()
-    public String insert(@Valid TreinadorDTO treinadorDTO,
-                         BindingResult result,
-                         RedirectAttributes attributes) {
-        if (result.hasErrors()) {
-            return "treinador/nova-treinador";
-        }
-        treinadorDTO = service.insert(treinadorDTO);
-        attributes.addFlashAttribute("mensagem", "Treinador salva com sucesso!");
-        return "redirect:/treinadors";
-    }
-
-    @GetMapping()
-    public String findAll(Model model) {
-        List<TreinadorDTO> treinadorsDTO = service.findAll();
-        model.addAttribute("treinadorsDTO", treinadorsDTO);
-        return "/treinador/listar-treinadors";
+    @GetMapping
+    public ResponseEntity<List<TreinadorDTO>> findAll() {
+        List<TreinadorDTO> dto = service.findAll();
+        return ResponseEntity.ok(dto);
     }
 
     @GetMapping("/{id}")
-    public String findById(@PathVariable("id") Long id, Model model) {
-        TreinadorDTO treinadorDTO = service.findById(id);
-        model.addAttribute("treinadorDTO", treinadorDTO);
-        return "/treinador/editar-treinador";
+    public ResponseEntity<TreinadorDTO> findById(@PathVariable Long id) {
+        TreinadorDTO dto = service.findById(id);
+        return ResponseEntity.ok(dto);
     }
 
+    @PostMapping
+    public ResponseEntity<TreinadorDTO> insert(@Valid TreinadorDTO dto) {
+
+        dto = service.insert(dto);
+        URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
+        return ResponseEntity.created(uri).body(dto);
+    }
+
+
     @PutMapping("/{id}")
-    public String update(@PathVariable("id") Long id,
-                         @Valid TreinadorDTO treinadorDTO,
-                         BindingResult result) {
-        if (result.hasErrors()) {
-            treinadorDTO.setId(id);
-            return "/treinador/editar-treinador";
-        }
-        service.update(id, treinadorDTO);
-        return "redirect:/treinadors";
+    public ResponseEntity<TreinadorDTO> update(@PathVariable @NotNull Long id,
+                                               @Valid TreinadorDTO dto) {
+        dto = service.update(id, dto);
+        return ResponseEntity.ok(dto);
     }
 
     @DeleteMapping("/{id}")
-    public String delete(@PathVariable("id") Long id, Model model) {
+    public ResponseEntity<Void> delete(@PathVariable Long id) {
         service.delete(id);
-        return "redirect:/treinadors";
+        return ResponseEntity.noContent().build();
     }
-    
+
 }
