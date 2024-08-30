@@ -50,7 +50,7 @@ public class Treinamento {
     @JoinColumn(name = "treinador_id", nullable = false)
     private Treinador treinador;
 
-    @OneToMany(mappedBy = "treinamento")
+    @OneToMany(mappedBy = "treinamento", fetch = FetchType.EAGER)
     private List<ListaDePresenca> listaDePresencaList = new ArrayList<>();
 
     @ManyToMany(fetch = FetchType.EAGER)

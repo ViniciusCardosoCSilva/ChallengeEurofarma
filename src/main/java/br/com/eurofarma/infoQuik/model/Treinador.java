@@ -33,7 +33,7 @@ public class Treinador {
     @Column(nullable = false)
     private String senha;
 
-    @OneToMany(mappedBy = "treinador")
+    @OneToMany(mappedBy = "treinador", fetch = FetchType.EAGER)
     private List<Treinamento> treinamentos = new ArrayList<>();
 
 }
