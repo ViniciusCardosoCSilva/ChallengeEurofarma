@@ -8,9 +8,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
-import java.util.Date;
-import java.util.HashSet;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -24,15 +22,16 @@ public class ListaDePresencaDTO {
 
     private String codigo;
 
-    private Treinamento treinamento;
+    private Long treinamentoId;
 
-    private Set<Funcionario> funcionarios = new HashSet<>();
+    private List<Funcionario> funcionarios = new ArrayList<>();
 
     public ListaDePresencaDTO(ListaDePresenca entity) {
         this.id = entity.getId();
         this.data_criacao = entity.getData_criacao();
         this.codigo = entity.getCodigo();
-        this.treinamento = entity.getTreinamento();
-        this.funcionarios = entity.getFuncionarios();
+        this.treinamentoId = entity.getTreinamento().getId();
+        this.funcionarios.addAll(entity.getFuncionarios());
+//        entity.getFuncionarios().forEach(funcionario -> funcionarios.add(new FuncionarioDTO(funcionario)));
     }
 }

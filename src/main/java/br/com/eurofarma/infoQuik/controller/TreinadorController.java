@@ -17,7 +17,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@RequestMapping("/treinadors")
+@RequestMapping("/treinadores")
 public class TreinadorController {
     @Autowired
 

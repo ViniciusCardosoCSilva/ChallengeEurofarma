@@ -6,6 +6,7 @@ import br.com.eurofarma.infoQuik.model.Departamento;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.Treinamento;
 import br.com.eurofarma.infoQuik.repository.DepartamentoRepository;
+import br.com.eurofarma.infoQuik.repository.FuncionarioRepository;
 import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -26,6 +27,9 @@ public class DepartamentoService {
 
     @Autowired
     private TreinamentoRepository treinamentoRepository;
+
+    @Autowired
+    private FuncionarioRepository funcionarioRepository;
 
     @Transactional(readOnly = true)
     public List<DepartamentoDTO> findAll() {
@@ -76,12 +80,32 @@ public class DepartamentoService {
 
     private void copyDtoToEntity(DepartamentoDTO dto, Departamento entity) {
         entity.setNome(dto.getNome());
-        entity.setFuncionarios(dto.getFuncionarios());
+        dto.getFuncionarios().forEach(funcionarioDTO -> {
+            Funcionario funcionario = funcionarioRepository.findById(funcionarioDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso nao encontrado id: " + funcionarioDTO.getId())
+            );
+            entity.getFuncionarios().add(funcionario);
+        });
 
         entity.getTreinamentos().clear();
-        for(Treinamento item: dto.getTreinamentos()){
-            Treinamento treinamento = treinamentoRepository.getReferenceById(item.getId());
+        dto.getTreinamentos().forEach(treinamentoDTO -> {
+            Treinamento treinamento = treinamentoRepository.findById(treinamentoDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso nao encontrado id: " + treinamentoDTO.getId())
+            );
             entity.getTreinamentos().add(treinamento);
-        }
+        });
+
+//        dto.getFuncionarios().forEach(funcionarioDTO -> {
+//            Funcionario funcionario = new Funcionario();
+//            funcionario.setId(funcionarioDTO.getId());
+//            entity.getFuncionarios().add(funcionario);
+//        });
+//
+//        entity.getTreinamentos().clear();
+//        dto.getTreinamentos().forEach(treinamentoDTO -> {
+//            Treinamento treinamento = new Treinamento();
+//            treinamento.setId(treinamentoDTO.getId());
+//            entity.getTreinamentos().add(treinamento);
+//        });
     }
 }

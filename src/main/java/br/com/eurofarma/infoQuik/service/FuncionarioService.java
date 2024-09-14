@@ -1,9 +1,11 @@
 package br.com.eurofarma.infoQuik.service;
 
 import br.com.eurofarma.infoQuik.dto.FuncionarioDTO;
+import br.com.eurofarma.infoQuik.model.Departamento;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
 import br.com.eurofarma.infoQuik.model.Treinamento;
+import br.com.eurofarma.infoQuik.repository.DepartamentoRepository;
 import br.com.eurofarma.infoQuik.repository.FuncionarioRepository;
 import br.com.eurofarma.infoQuik.repository.ListaDePresencaRepository;
 import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
@@ -25,6 +27,9 @@ public class FuncionarioService {
 
     @Autowired
     private ListaDePresencaRepository listaDePresencaRepository;
+
+    @Autowired
+    private DepartamentoRepository departamentoRepository;
 
     @Transactional(readOnly = true)
     public List<FuncionarioDTO> findAll() {
@@ -77,20 +82,38 @@ public class FuncionarioService {
         entity.setCpf(dto.getCpf());
         entity.setEmail(dto.getEmail());
         entity.setSenha(dto.getSenha());// estou em duvida se dever te isso
-        entity.setDepartamento(dto.getDepartamento());
 
-        entity.getTreinamentos().clear();
-        for(Treinamento item: dto.getTreinamentos()){
-            Treinamento treinamento = treinamentoRepository.getReferenceById(item.getId());
+        Departamento departamento = departamentoRepository.findById(dto.getDepartamentoId()).orElseThrow(
+                () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamentoId())
+        );
+        entity.setDepartamento(departamento);
+
+        dto.getTreinamentos().forEach(treinamentoDTO -> {
+            Treinamento treinamento = treinamentoRepository.findById(treinamentoDTO.getId()).orElseThrow(
+                () -> new IllegalArgumentException("Recurso nao encontrado: id " + treinamentoDTO.getId())
+            );
             entity.getTreinamentos().add(treinamento);
-        }
+        });
 
-        entity.getListaDePresencaSet().clear();
-        for(ListaDePresenca item: dto.getListaDePresencaList()){
-            //para colocar os dados completos da loja
-            ListaDePresenca listaDePresenca = listaDePresencaRepository.getReferenceById(item.getId());
+        dto.getListaDePresencaList().forEach(listaDePresencaDTO -> {
+            ListaDePresenca listaDePresenca = listaDePresencaRepository.findById(listaDePresencaDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso nao encontrado: id " + listaDePresencaDTO.getId())
+            );
             entity.getListaDePresencaSet().add(listaDePresenca);
-        }
+        });
+//        entity.getTreinamentos().clear();
+//        dto.getTreinamentos().forEach(treinamentoDTO -> {
+//            Treinamento treinamento = new Treinamento();
+//            treinamento.setId(treinamentoDTO.getId());
+//            entity.getTreinamentos().add(treinamento);
+//        });
+//
+//        entity.getListaDePresencaSet().clear();
+//        dto.getListaDePresencaList().forEach(listaDePresencaDTO -> {
+//            ListaDePresenca listaDePresenca = new ListaDePresenca();
+//            listaDePresenca.setId(listaDePresencaDTO.getId());
+//            entity.getListaDePresencaSet().add(listaDePresenca);
+//        });
     }
 
 }

@@ -2,7 +2,9 @@ package br.com.eurofarma.infoQuik.service;
 
 import br.com.eurofarma.infoQuik.dto.TagDTO;
 import br.com.eurofarma.infoQuik.model.Tag;
+import br.com.eurofarma.infoQuik.model.Treinamento;
 import br.com.eurofarma.infoQuik.repository.TagRepository;
+import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
 import jakarta.persistence.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -17,6 +19,9 @@ public class TagService {
 
     @Autowired
     private TagRepository repository;
+
+    @Autowired
+    private TreinamentoRepository treinamentoRepository;
 
     @Transactional(readOnly = true)
     public List<TagDTO> findAll() {
@@ -68,8 +73,8 @@ public class TagService {
     }
 
     private void copyDtoToEntity(TagDTO dto, Tag entity) {
-        entity.setId(dto.getId());
         entity.setNome(dto.getNome());
-        entity.setTreinamento(dto.getTreinamento());
+        entity.setTreinamento(new Treinamento());
+        entity.getTreinamento().setId(dto.getTreinamentoId());
     }
 }

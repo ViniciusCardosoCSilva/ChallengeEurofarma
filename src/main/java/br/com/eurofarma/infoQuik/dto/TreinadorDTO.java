@@ -2,6 +2,7 @@ package br.com.eurofarma.infoQuik.dto;
 
 import br.com.eurofarma.infoQuik.model.Treinador;
 import br.com.eurofarma.infoQuik.model.Treinamento;
+import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -46,5 +47,6 @@ public class TreinadorDTO {
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
         this.treinamentos.addAll(entity.getTreinamentos());
+//        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTO(treinamento)));
     }
 }

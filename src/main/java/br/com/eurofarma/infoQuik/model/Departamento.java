@@ -1,5 +1,7 @@
 package br.com.eurofarma.infoQuik.model;
 
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,6 +18,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Table(name = "tb_departamento")
 public class Departamento {
 
@@ -26,7 +31,7 @@ public class Departamento {
     @Column(nullable = false)
     private String nome;
 
-    @OneToMany(mappedBy = "departamento")
+    @OneToMany(mappedBy = "departamento", fetch = FetchType.EAGER)
     private List<Funcionario> funcionarios = new ArrayList<>();
 
     @ManyToMany(mappedBy = "departamentos", fetch = FetchType.EAGER)

@@ -21,11 +21,11 @@ public class TagDTO {
     @Size(min = 3, message = "O nome deve ter no mínimo 3 caractéres")
     private String nome;
 
-    private Treinamento treinamento;
+    private Long treinamentoId;
 
     public TagDTO(Tag entity) {
         this.id = entity.getId();
         this.nome = entity.getNome();
-        this.treinamento = entity.getTreinamento();
+        this.treinamentoId = entity.getTreinamento().getId();
     }
 }

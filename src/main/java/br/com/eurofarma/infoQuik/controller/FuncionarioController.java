@@ -24,7 +24,7 @@ import java.net.URI;
 import java.util.List;
 
 @Controller
-@RequestMapping("/funcionarioos")
+@RequestMapping("/funcionarios")
 public class FuncionarioController {
     @Autowired
     private FuncionarioService service;

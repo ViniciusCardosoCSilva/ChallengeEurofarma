@@ -1,11 +1,11 @@
 package br.com.eurofarma.infoQuik.service;
 
+import br.com.eurofarma.infoQuik.dto.DepartamentoDTO;
+import br.com.eurofarma.infoQuik.dto.FuncionarioDTO;
+import br.com.eurofarma.infoQuik.dto.ListaDePresencaDTO;
 import br.com.eurofarma.infoQuik.dto.TreinamentoDTO;
 import br.com.eurofarma.infoQuik.model.*;
-import br.com.eurofarma.infoQuik.repository.DepartamentoRepository;
-import br.com.eurofarma.infoQuik.repository.FuncionarioRepository;
-import br.com.eurofarma.infoQuik.repository.ListaDePresencaRepository;
-import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
+import br.com.eurofarma.infoQuik.repository.*;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,6 +30,9 @@ public class TreinamentoService {
 
     @Autowired
     FuncionarioRepository funcionarioRepository;
+
+    @Autowired
+    TreinadorRepository treinadorRepository;
 
     @Transactional(readOnly = true)
     public List<TreinamentoDTO> findAll() {
@@ -139,32 +142,53 @@ public class TreinamentoService {
         entity.setData_ultima_alteracao(dto.getData_ultima_alteracao());
         entity.setStatus(dto.getStatus());
         entity.setTitulo(dto.getTitulo());
-        entity.setTreinador(dto.getTreinador());
+        entity.setTreinador(treinadorRepository.findById(dto.getTreinadorId()).orElseThrow(
+                () -> new IllegalArgumentException("Recurso não encontrado")
+        ));
 
-        // somente treinador vê todos os func.
-        // talvez dar clear qnd for direcionado a não treinadores
-        entity.getFuncionarios().clear();
-        for(Funcionario func : dto.getFuncionarios()){
-            Funcionario funcionario = funcionarioRepository.getReferenceById(
-                    func.getId()
+        dto.getFuncionarios().forEach(funcionarioDTO -> {
+            Funcionario funcionario = funcionarioRepository.findById(funcionarioDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso não encontrado")
             );
             entity.getFuncionarios().add(funcionario);
-        }
+        });
 
-        entity.getListaDePresencaList().clear();
-        for(ListaDePresenca list: dto.getListaDePresencaList()){
-            ListaDePresenca listaDePresenca = listaDePresencaRepository.getReferenceById(
-                    list.getId()
+        dto.getListaDePresencaList().forEach(listaDePresencaDTO -> {
+            ListaDePresenca listaDePresenca = listaDePresencaRepository.findById(listaDePresencaDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso não encontrado")
             );
             entity.getListaDePresencaList().add(listaDePresenca);
-        }
+        });
 
-        entity.getDepartamentos().clear();
-        for(Departamento dep: dto.getDepartamentos()){
-            Departamento departamento = departamentoRepository.getReferenceById(dep.getId());
+        dto.getDepartamentos().forEach(departamentoDTO -> {
+            Departamento departamento = departamentoRepository.findById(departamentoDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso não encontrado")
+            );
             entity.getDepartamentos().add(departamento);
-        }
-
+        });
+        // somente treinador vê todos os func.
+        // talvez dar clear qnd for direcionado a não treinadores
+//        entity.getFuncionarios().clear();
+//        dto.getFuncionarios().forEach(funcionarioDTO -> {
+//            Funcionario funcionario = new Funcionario();
+//            funcionario.setId(funcionarioDTO.getId());
+//            entity.getFuncionarios().add(funcionario);
+//        });
+//
+//        entity.getListaDePresencaList().clear();
+//        dto.getListaDePresencaList().forEach(listaDePresencaDTO -> {
+//            ListaDePresenca listaDePresenca = new ListaDePresenca();
+//            listaDePresenca.setId(listaDePresencaDTO.getId());
+//            entity.getListaDePresencaList().add(listaDePresenca);
+//        });
+//
+//
+//        entity.getDepartamentos().clear();
+//        dto.getDepartamentos().forEach(departamentoDTO -> {
+//            Departamento departamento = new Departamento();
+//            departamento.setId(departamentoDTO.getId());
+//            entity.getDepartamentos().add(departamento);
+//        });
     }
 
 

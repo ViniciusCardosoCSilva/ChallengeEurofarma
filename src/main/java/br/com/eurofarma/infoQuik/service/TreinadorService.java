@@ -2,7 +2,9 @@ package br.com.eurofarma.infoQuik.service;
 
 import br.com.eurofarma.infoQuik.dto.TreinadorDTO;
 import br.com.eurofarma.infoQuik.model.Treinador;
+import br.com.eurofarma.infoQuik.model.Treinamento;
 import br.com.eurofarma.infoQuik.repository.TreinadorRepository;
+import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
@@ -16,6 +18,9 @@ import java.util.stream.Collectors;
 public class TreinadorService {
     @Autowired
     private TreinadorRepository repository;
+
+    @Autowired
+    private TreinamentoRepository treinamentoRepository;
 
     @Transactional(readOnly = true)
     public List<TreinadorDTO> findAll() {
@@ -68,5 +73,19 @@ public class TreinadorService {
 
     private void copyDtoToEntity(TreinadorDTO dto, Treinador entity) {
         entity.setNome(dto.getNome());
+        entity.setCpf(dto.getCpf());
+        entity.setEmail(dto.getEmail());
+        entity.setSenha(dto.getSenha());
+        dto.getTreinamentos().forEach(treinamentoDTO -> {
+            Treinamento treinamento = treinamentoRepository.findById(treinamentoDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso nao encontrado id: " + treinamentoDTO.getId())
+            );
+            entity.getTreinamentos().add(treinamento);
+        });
+//        dto.getTreinamentos().forEach(treinamentoDTO -> {
+//            Treinamento treinamento = new Treinamento();
+//            treinamento.setId(dto.getId());
+//            entity.getTreinamentos().add(treinamento);
+//        });
     }
 }

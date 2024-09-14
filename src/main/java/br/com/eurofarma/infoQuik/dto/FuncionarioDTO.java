@@ -41,7 +41,7 @@ public class FuncionarioDTO {
 
     private List<Treinamento> treinamentos = new ArrayList<>();
 
-    private Departamento departamento;
+    private Long departamentoId;
 
     private List<ListaDePresenca> listaDePresencaList = new ArrayList<>();
 
@@ -51,8 +51,10 @@ public class FuncionarioDTO {
         this.cpf = entity.getCpf();
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
+        this.departamentoId = entity.getDepartamento().getId();
         this.treinamentos.addAll(entity.getTreinamentos());
-        this.departamento = getDepartamento();
         this.listaDePresencaList.addAll(entity.getListaDePresencaSet());
+//        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTO(treinamento)));
+//        entity.getListaDePresencaSet().forEach(listaDePresenca -> listaDePresencaList.add(new ListaDePresencaDTO(listaDePresenca)));
     }
 }

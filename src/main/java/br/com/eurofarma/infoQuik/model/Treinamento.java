@@ -1,5 +1,8 @@
 package br.com.eurofarma.infoQuik.model;
 
+import br.com.eurofarma.infoQuik.dto.TreinamentoDTO;
+import com.fasterxml.jackson.annotation.JsonIdentityInfo;
+import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -13,6 +16,9 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
+@JsonIdentityInfo(
+        generator = ObjectIdGenerators.PropertyGenerator.class,
+        property = "id")
 @Table(name = "tb_treinamento")
 public class Treinamento {
 
@@ -43,7 +49,7 @@ public class Treinamento {
     @Column(nullable = false)
     private Status status;
 
-    @OneToMany(mappedBy = "treinamento")
+    @OneToMany(mappedBy = "treinamento", fetch = FetchType.EAGER)
     private List<Tag> tags = new ArrayList<>();
 
     @ManyToOne
@@ -64,4 +70,5 @@ public class Treinamento {
             joinColumns = @JoinColumn(name = "treinamento_id"),
             inverseJoinColumns = @JoinColumn(name = "departamento_id"))
     private Set<Departamento> departamentos = new HashSet<>();
+
 }

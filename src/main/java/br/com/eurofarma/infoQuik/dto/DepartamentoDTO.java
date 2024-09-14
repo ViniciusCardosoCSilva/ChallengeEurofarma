@@ -31,14 +31,9 @@ public class DepartamentoDTO {
     public DepartamentoDTO(Departamento entity){
         this.id = entity.getId();
         this.nome = entity.getNome();
-
         this.funcionarios.addAll(entity.getFuncionarios());
-
         this.treinamentos.addAll(entity.getTreinamentos());
-
-//        versao da professora caso o metodo addAll() nao funcione:
-//        for(Funcionario funcionario : entity.getFuncionarios()){
-//            this.funcionarios.add(funcionario);
-//        }
+//        entity.getFuncionarios().forEach(funcionario -> funcionarios.add(new FuncionarioDTO(funcionario)));
+//        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTO(treinamento)));
     }
 }

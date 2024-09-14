@@ -26,10 +26,10 @@ public class TreinamentoDTO {
     @Size(min = 5, message = "A descrição deve ter pelo menos 5 caracteres.")
     private String descricao;
 
-    @NotNull (message = "Data requerida.")
+    @NotNull(message = "Data requerida.")
     private Date data_criacao;
 
-    @NotNull (message = "Data requerida.")
+    @NotNull(message = "Data requerida.")
     private Date data_ultima_alteracao;
 
     @NotBlank(message = "Campo requerido")
@@ -46,7 +46,7 @@ public class TreinamentoDTO {
     private Status status;
 
     private List<Tag> tags = new ArrayList<>();
-    private Treinador treinador;
+    private Long treinadorId;
     private List<Funcionario> funcionarios = new ArrayList<>();
     private List<ListaDePresenca> listaDePresencaList = new ArrayList<>();
     private List<Departamento> departamentos = new ArrayList<>();
@@ -60,10 +60,14 @@ public class TreinamentoDTO {
         this.corpo_texto = entity.getCorpo_texto();
         this.tipo = entity.getTipo();
         this.status = entity.getStatus();
+        this.treinadorId = entity.getTreinador().getId();
         this.tags.addAll(entity.getTags());
-        this.treinador = entity.getTreinador();
         this.funcionarios.addAll(entity.getFuncionarios());
         this.listaDePresencaList.addAll(entity.getListaDePresencaList());
         this.departamentos.addAll(entity.getDepartamentos());
+//        entity.getTags().forEach(tag -> tags.add(new TagDTO(tag)));
+//        entity.getFuncionarios().forEach(funcionario -> funcionarios.add(new FuncionarioDTO(funcionario)));
+//        entity.getListaDePresencaList().forEach(listaDePresenca -> listaDePresencaList.add(new ListaDePresencaDTO(listaDePresenca)));
+//        entity.getDepartamentos().forEach(departamento -> departamentos.add(new DepartamentoDTO(departamento)));
     }
 }
