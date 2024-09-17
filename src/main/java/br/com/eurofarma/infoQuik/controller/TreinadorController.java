@@ -1,16 +1,13 @@
 package br.com.eurofarma.infoQuik.controller;
 
-import br.com.eurofarma.infoQuik.dto.TreinadorDTO;
+import br.com.eurofarma.infoQuik.dto.treinadorDTO.TreinadorDTO;
 import br.com.eurofarma.infoQuik.service.TreinadorService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -30,13 +27,13 @@ public class TreinadorController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<TreinadorDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<TreinadorDTO> findById(@PathVariable @NotNull Long id) {
         TreinadorDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<TreinadorDTO> insert(@Valid TreinadorDTO dto) {
+    public ResponseEntity<TreinadorDTO> insert(@RequestBody @Valid TreinadorDTO dto) {
 
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
@@ -46,7 +43,7 @@ public class TreinadorController {
 
     @PutMapping("/{id}")
     public ResponseEntity<TreinadorDTO> update(@PathVariable @NotNull Long id,
-                                               @Valid TreinadorDTO dto) {
+                                               @RequestBody @Valid TreinadorDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }

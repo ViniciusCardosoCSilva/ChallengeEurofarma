@@ -1,20 +1,13 @@
 package br.com.eurofarma.infoQuik.controller;
 
-import br.com.eurofarma.infoQuik.dto.FuncionarioDTO;
-import br.com.eurofarma.infoQuik.dto.ListaDePresencaDTO;
-import br.com.eurofarma.infoQuik.dto.TreinamentoDTO;
-import br.com.eurofarma.infoQuik.service.FuncionarioService;
+import br.com.eurofarma.infoQuik.dto.listadepresencaDTO.ListaDePresencaDTO;
 import br.com.eurofarma.infoQuik.service.ListaDePresencaService;
-import br.com.eurofarma.infoQuik.service.TreinamentoService;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.http.ResponseEntity;
 import org.springframework.stereotype.Controller;
-import org.springframework.ui.Model;
-import org.springframework.validation.BindingResult;
 import org.springframework.web.bind.annotation.*;
-import org.springframework.web.servlet.mvc.support.RedirectAttributes;
 import org.springframework.web.servlet.support.ServletUriComponentsBuilder;
 
 import java.net.URI;
@@ -33,13 +26,13 @@ public class ListaDePresencaController {
     }
 
     @GetMapping("/{id}")
-    public ResponseEntity<ListaDePresencaDTO> findById(@PathVariable Long id) {
+    public ResponseEntity<ListaDePresencaDTO> findById(@PathVariable @NotNull Long id) {
         ListaDePresencaDTO dto = service.findById(id);
         return ResponseEntity.ok(dto);
     }
 
     @PostMapping
-    public ResponseEntity<ListaDePresencaDTO> insert(@Valid ListaDePresencaDTO dto) {
+    public ResponseEntity<ListaDePresencaDTO> insert(@RequestBody @Valid ListaDePresencaDTO dto) {
 
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();
@@ -49,7 +42,7 @@ public class ListaDePresencaController {
 
     @PutMapping("/{id}")
     public ResponseEntity<ListaDePresencaDTO> update(@PathVariable @NotNull Long id,
-                                                @Valid ListaDePresencaDTO dto) {
+                                                     @RequestBody @Valid ListaDePresencaDTO dto) {
         dto = service.update(id, dto);
         return ResponseEntity.ok(dto);
     }

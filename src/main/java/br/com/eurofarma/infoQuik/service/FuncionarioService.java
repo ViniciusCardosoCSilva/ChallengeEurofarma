@@ -1,6 +1,6 @@
 package br.com.eurofarma.infoQuik.service;
 
-import br.com.eurofarma.infoQuik.dto.FuncionarioDTO;
+import br.com.eurofarma.infoQuik.dto.funcionarioDTO.FuncionarioDTO;
 import br.com.eurofarma.infoQuik.model.Departamento;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
@@ -16,6 +16,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static br.com.eurofarma.infoQuik.utils.CriptografiaUtils.criptografar;
 
 @Service
 public class FuncionarioService {
@@ -81,7 +83,12 @@ public class FuncionarioService {
         entity.setNome(dto.getNome());
         entity.setCpf(dto.getCpf());
         entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());// estou em duvida se dever te isso
+        try {
+            String senha = criptografar(dto.getSenha());
+            entity.setSenha(senha);// estou em duvida se dever te isso
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
 
         Departamento departamento = departamentoRepository.findById(dto.getDepartamentoId()).orElseThrow(
                 () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamentoId())

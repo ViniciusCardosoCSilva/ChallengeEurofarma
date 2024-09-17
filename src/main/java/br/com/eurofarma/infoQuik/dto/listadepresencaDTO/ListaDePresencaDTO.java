@@ -1,8 +1,7 @@
-package br.com.eurofarma.infoQuik.dto;
+package br.com.eurofarma.infoQuik.dto.listadepresencaDTO;
 
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
-import br.com.eurofarma.infoQuik.model.Treinamento;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;

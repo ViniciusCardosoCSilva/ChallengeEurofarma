@@ -1,7 +1,6 @@
 package br.com.eurofarma.infoQuik.service;
 
-import br.com.eurofarma.infoQuik.dto.FuncionarioDTO;
-import br.com.eurofarma.infoQuik.dto.ListaDePresencaDTO;
+import br.com.eurofarma.infoQuik.dto.listadepresencaDTO.ListaDePresencaDTO;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
 import br.com.eurofarma.infoQuik.repository.FuncionarioRepository;

@@ -1,8 +1,7 @@
-package br.com.eurofarma.infoQuik.dto;
+package br.com.eurofarma.infoQuik.dto.treinadorDTO;
 
+import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTOComListaDeDepartamentosSemFuncionarios;
 import br.com.eurofarma.infoQuik.model.Treinador;
-import br.com.eurofarma.infoQuik.model.Treinamento;
-import com.fasterxml.jackson.annotation.JsonIgnore;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -35,10 +34,10 @@ public class TreinadorDTO {
     private String email;
 
     @NotBlank(message = "Campo requerido")
-    @Size(min = 8, message = "A senha deve ter no mínimo 8 caractéres")
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caractéres")
     private String senha;
 
-    private List<Treinamento> treinamentos = new ArrayList<>();
+    private List<TreinamentoDTOComListaDeDepartamentosSemFuncionarios> treinamentos = new ArrayList<>();
 
     public TreinadorDTO(Treinador entity) {
         this.id = entity.getId();
@@ -46,7 +45,7 @@ public class TreinadorDTO {
         this.cpf = entity.getCpf();
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
-        this.treinamentos.addAll(entity.getTreinamentos());
-//        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTO(treinamento)));
+//        this.treinamentos.addAll(entity.getTreinamentos());
+        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTOComListaDeDepartamentosSemFuncionarios(treinamento)));
     }
 }

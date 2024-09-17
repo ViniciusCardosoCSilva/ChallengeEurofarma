@@ -1,9 +1,6 @@
 package br.com.eurofarma.infoQuik.service;
 
-import br.com.eurofarma.infoQuik.dto.DepartamentoDTO;
-import br.com.eurofarma.infoQuik.dto.FuncionarioDTO;
-import br.com.eurofarma.infoQuik.dto.ListaDePresencaDTO;
-import br.com.eurofarma.infoQuik.dto.TreinamentoDTO;
+import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTO;
 import br.com.eurofarma.infoQuik.model.*;
 import br.com.eurofarma.infoQuik.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -11,7 +8,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
@@ -145,13 +141,6 @@ public class TreinamentoService {
         entity.setTreinador(treinadorRepository.findById(dto.getTreinadorId()).orElseThrow(
                 () -> new IllegalArgumentException("Recurso não encontrado")
         ));
-
-        dto.getFuncionarios().forEach(funcionarioDTO -> {
-            Funcionario funcionario = funcionarioRepository.findById(funcionarioDTO.getId()).orElseThrow(
-                    () -> new IllegalArgumentException("Recurso não encontrado")
-            );
-            entity.getFuncionarios().add(funcionario);
-        });
 
         dto.getListaDePresencaList().forEach(listaDePresencaDTO -> {
             ListaDePresenca listaDePresenca = listaDePresencaRepository.findById(listaDePresencaDTO.getId()).orElseThrow(

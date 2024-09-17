@@ -18,9 +18,9 @@ import java.util.Set;
 @Getter
 @Setter
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 @Table(name = "tb_funcionario")
 public class Funcionario {
 
@@ -56,4 +56,5 @@ public class Funcionario {
 
     @ManyToMany(mappedBy = "funcionarios", fetch = FetchType.EAGER)
     private Set<ListaDePresenca> listaDePresencaSet = new HashSet<>();
+
 }

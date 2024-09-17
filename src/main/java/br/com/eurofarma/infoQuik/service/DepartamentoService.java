@@ -1,7 +1,6 @@
 package br.com.eurofarma.infoQuik.service;
 
-import br.com.eurofarma.infoQuik.dto.DepartamentoDTO;
-import br.com.eurofarma.infoQuik.dto.TreinamentoDTO;
+import br.com.eurofarma.infoQuik.dto.departamentoDTO.DepartamentoDTO;
 import br.com.eurofarma.infoQuik.model.Departamento;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.Treinamento;
@@ -13,10 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
-import java.util.ArrayList;
-import java.util.HashSet;
 import java.util.List;
-import java.util.Set;
 import java.util.stream.Collectors;
 
 @Service

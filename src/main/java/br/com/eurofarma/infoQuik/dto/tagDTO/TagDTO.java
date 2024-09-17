@@ -1,7 +1,6 @@
-package br.com.eurofarma.infoQuik.dto;
+package br.com.eurofarma.infoQuik.dto.tagDTO;
 
 import br.com.eurofarma.infoQuik.model.Tag;
-import br.com.eurofarma.infoQuik.model.Treinamento;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
 import lombok.AllArgsConstructor;

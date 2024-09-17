@@ -1,8 +1,5 @@
 package br.com.eurofarma.infoQuik.model;
 
-import br.com.eurofarma.infoQuik.dto.TreinamentoDTO;
-import com.fasterxml.jackson.annotation.JsonIdentityInfo;
-import com.fasterxml.jackson.annotation.ObjectIdGenerators;
 import jakarta.persistence.*;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
@@ -16,9 +13,9 @@ import java.util.*;
 @Getter
 @Setter
 @Entity
-@JsonIdentityInfo(
-        generator = ObjectIdGenerators.PropertyGenerator.class,
-        property = "id")
+//@JsonIdentityInfo(
+//        generator = ObjectIdGenerators.PropertyGenerator.class,
+//        property = "id")
 @Table(name = "tb_treinamento")
 public class Treinamento {
 

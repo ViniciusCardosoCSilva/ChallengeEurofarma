@@ -1,9 +1,8 @@
-package br.com.eurofarma.infoQuik.dto;
+package br.com.eurofarma.infoQuik.dto.funcionarioDTO;
 
-import br.com.eurofarma.infoQuik.model.Departamento;
+import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTOSemListaDePresencaEListaDepartamentos;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
-import br.com.eurofarma.infoQuik.model.Treinamento;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -28,7 +27,7 @@ public class FuncionarioDTO {
     private String nome;
 
     @NotBlank(message = "Campo requerido")
-    @Size(min = 11, message = "O cpf deve ter no mínimo 11 caractéres")
+    @Size(min = 11, message = "O cpf deve ter 11 caractéres")
     private String cpf;
 
     @NotBlank(message = "Campo requerido")
@@ -36,10 +35,10 @@ public class FuncionarioDTO {
     private String email;
 
     @NotBlank(message = "Campo requerido")
-    @Size(min = 8, message = "A senha deve ter no mínimo 8 caractéres")
+    @Size(min = 6, message = "A senha deve ter no mínimo 6 caractéres")
     private String senha;
 
-    private List<Treinamento> treinamentos = new ArrayList<>();
+    private List<TreinamentoDTOSemListaDePresencaEListaDepartamentos> treinamentos = new ArrayList<>();
 
     private Long departamentoId;
 
@@ -52,9 +51,8 @@ public class FuncionarioDTO {
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
         this.departamentoId = entity.getDepartamento().getId();
-        this.treinamentos.addAll(entity.getTreinamentos());
         this.listaDePresencaList.addAll(entity.getListaDePresencaSet());
-//        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTO(treinamento)));
+        entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTOSemListaDePresencaEListaDepartamentos(treinamento)));
 //        entity.getListaDePresencaSet().forEach(listaDePresenca -> listaDePresencaList.add(new ListaDePresencaDTO(listaDePresenca)));
     }
 }

@@ -1,6 +1,6 @@
 package br.com.eurofarma.infoQuik.service;
 
-import br.com.eurofarma.infoQuik.dto.TreinadorDTO;
+import br.com.eurofarma.infoQuik.dto.treinadorDTO.TreinadorDTO;
 import br.com.eurofarma.infoQuik.model.Treinador;
 import br.com.eurofarma.infoQuik.model.Treinamento;
 import br.com.eurofarma.infoQuik.repository.TreinadorRepository;
@@ -13,6 +13,8 @@ import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
+
+import static br.com.eurofarma.infoQuik.utils.CriptografiaUtils.criptografar;
 
 @Service
 public class TreinadorService {
@@ -75,7 +77,13 @@ public class TreinadorService {
         entity.setNome(dto.getNome());
         entity.setCpf(dto.getCpf());
         entity.setEmail(dto.getEmail());
-        entity.setSenha(dto.getSenha());
+        String senha = null;
+        try {
+            senha = criptografar(dto.getSenha());
+            entity.setSenha(senha);
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
         dto.getTreinamentos().forEach(treinamentoDTO -> {
             Treinamento treinamento = treinamentoRepository.findById(treinamentoDTO.getId()).orElseThrow(
                     () -> new IllegalArgumentException("Recurso nao encontrado id: " + treinamentoDTO.getId())

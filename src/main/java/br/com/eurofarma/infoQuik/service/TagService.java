@@ -1,6 +1,6 @@
 package br.com.eurofarma.infoQuik.service;
 
-import br.com.eurofarma.infoQuik.dto.TagDTO;
+import br.com.eurofarma.infoQuik.dto.tagDTO.TagDTO;
 import br.com.eurofarma.infoQuik.model.Tag;
 import br.com.eurofarma.infoQuik.model.Treinamento;
 import br.com.eurofarma.infoQuik.repository.TagRepository;
