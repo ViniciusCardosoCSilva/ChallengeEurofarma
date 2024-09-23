@@ -7,11 +7,11 @@ import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
+import org.springframework.security.core.GrantedAuthority;
+import org.springframework.security.core.authority.SimpleGrantedAuthority;
+import org.springframework.security.core.userdetails.UserDetails;
 
-import java.util.ArrayList;
-import java.util.HashSet;
-import java.util.List;
-import java.util.Set;
+import java.util.*;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -22,7 +22,7 @@ import java.util.Set;
 //        generator = ObjectIdGenerators.PropertyGenerator.class,
 //        property = "id")
 @Table(name = "tb_funcionario")
-public class Funcionario {
+public class Funcionario implements UserDetails {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
@@ -39,6 +39,10 @@ public class Funcionario {
 
     @Column(nullable = false)
     private String senha;
+
+    @Column(nullable = false)
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
 
 //    @OneToMany(mappedBy = "funcionario")
 //    private List<Treinamento> treinamentos = new ArrayList<>();
@@ -57,4 +61,18 @@ public class Funcionario {
     @ManyToMany(mappedBy = "funcionarios", fetch = FetchType.EAGER)
     private Set<ListaDePresenca> listaDePresencaSet = new HashSet<>();
 
+    @Override
+    public Collection<? extends GrantedAuthority> getAuthorities() {
+        return List.of(new SimpleGrantedAuthority("ROLE_FUNCIONARIO"));
+    }
+
+    @Override
+    public String getPassword() {
+        return senha;
+    }
+
+    @Override
+    public String getUsername() {
+        return email;
+    }
 }

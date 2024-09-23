@@ -2,6 +2,9 @@ package br.com.eurofarma.infoQuik.dto.treinadorDTO;
 
 import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTOComListaDeDepartamentosSemFuncionarios;
 import br.com.eurofarma.infoQuik.model.Treinador;
+import br.com.eurofarma.infoQuik.model.UserRole;
+import jakarta.persistence.EnumType;
+import jakarta.persistence.Enumerated;
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotBlank;
 import jakarta.validation.constraints.Size;
@@ -37,6 +40,9 @@ public class TreinadorDTO {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caractéres")
     private String senha;
 
+    @Enumerated(EnumType.STRING)
+    private UserRole role;
+
     private List<TreinamentoDTOComListaDeDepartamentosSemFuncionarios> treinamentos = new ArrayList<>();
 
     public TreinadorDTO(Treinador entity) {
@@ -45,6 +51,7 @@ public class TreinadorDTO {
         this.cpf = entity.getCpf();
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
+        this.role = entity.getRole();
 //        this.treinamentos.addAll(entity.getTreinamentos());
         entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTOComListaDeDepartamentosSemFuncionarios(treinamento)));
     }
