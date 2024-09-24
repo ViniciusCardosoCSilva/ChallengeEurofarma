@@ -1,6 +1,6 @@
 {
 	"info": {
-		"_postman_id": "faf43fd8-c242-43c2-8473-e4847e477cd4",
+		"_postman_id": "353f9d35-f5f9-4a6f-a9ef-e3523d95c6af",
 		"name": "Eurofarma REST API",
 		"description": "### Métodos HTTP para teste da API\n\n## Enpoints\n\n/treinamentos  \n/treinadores  \n/funcionarios  \n/departamentos  \n/tags  \n/listaDePresencas",
 		"schema": "https://schema.getpostman.com/json/collection/v2.1.0/collection.json",
@@ -27,8 +27,24 @@
 						}
 					],
 					"request": {
+						"auth": {
+							"type": "bearer",
+							"bearer": [
+								{
+									"key": "token",
+									"value": "",
+									"type": "string"
+								}
+							]
+						},
 						"method": "GET",
-						"header": [],
+						"header": [
+							{
+								"key": "",
+								"value": "",
+								"type": "text"
+							}
+						],
 						"url": {
 							"raw": "{{base_url}}/treinamentos",
 							"host": [
@@ -295,7 +311,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"raw": "{\n\t\"nome\": \"Gabriel Silva Pereira\",\n    \"cpf\": \"48392671504\",\n    \"email\": \"gabriel.silva@eurofarma.com\",\n    \"senha\": \"12345678\"\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -458,13 +474,13 @@
 						"method": "GET",
 						"header": [],
 						"url": {
-							"raw": "{{base_url}}/funcionarios/{{id}}",
+							"raw": "{{base_url}}/funcionarios/10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"funcionarios",
-								"{{id}}"
+								"10"
 							]
 						},
 						"description": "This is a GET request and it is used to \"get\" data from an endpoint. There is no request body for a GET request, but you can use query parameters to help specify the resource you want data on (e.g., in this request, we have `id=1`).\n\nA successful GET response will have a `200 OK` status, and should include some kind of response body - for example, HTML web content or JSON data."
@@ -493,7 +509,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"raw": "{\n    \"nome\": \"Caio Silva\",\n    \"cpf\": \"29832749881\",\n    \"email\": \"caio@eurofarma.com\",\n    \"senha\": \"123456\",\n    \"departamentoId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -535,7 +551,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"raw": "{\n    \"nome\": \"Caio Alves\",\n    \"cpf\": \"29832749877\",\n    \"email\": \"caio10@eurofarma.com\",\n    \"senha\": \"123456\",\n    \"departamentoId\": 1\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -543,13 +559,13 @@
 							}
 						},
 						"url": {
-							"raw": "{{base_url}}/funcionarios/{{id}}",
+							"raw": "{{base_url}}/funcionarios/10",
 							"host": [
 								"{{base_url}}"
 							],
 							"path": [
 								"funcionarios",
-								"{{id}}"
+								"10"
 							]
 						},
 						"description": "This is a PUT request and it is used to overwrite an existing piece of data. For instance, after you create an entity with a POST request, you may want to modify that later. You can do that using a PUT request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful PUT request typically returns a `200 OK`, `201 Created`, or `204 No Content` response code."
@@ -889,7 +905,7 @@
 						"header": [],
 						"body": {
 							"mode": "raw",
-							"raw": "{\n\t\"name\": \"Add your name in the body\"\n}",
+							"raw": "{\n\t\"nome\": \"Java\",\n    \"treinamentoId\": 2\n}",
 							"options": {
 								"raw": {
 									"language": "json"
@@ -1190,6 +1206,84 @@
 							]
 						},
 						"description": "This is a DELETE request, and it is used to delete data that was previously created via a POST request. You typically identify the entity being updated by including an identifier in the URL (eg. `id=1`).\n\nA successful DELETE request typically returns a `200 OK`, `202 Accepted`, or `204 No Content` response code."
+					},
+					"response": []
+				}
+			]
+		},
+		{
+			"name": "Auth",
+			"item": [
+				{
+					"name": "Login",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"email\": \"joaopedro@eurofarma.com\",\r\n    \"password\": \"123456\"\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/login",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"login"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"body": {
+							"mode": "raw",
+							"raw": "{\r\n    \"nome\": \"joao pedro\",\r\n    \"cpf\": \"11111111111\",\r\n    \"email\": \"joaopedro@eurofarma.com\",\r\n    \"senha\": \"123456\",\r\n    \"role\": \"TREINADOR\",\r\n    \"departamentoId\": 1\r\n}",
+							"options": {
+								"raw": {
+									"language": "json"
+								}
+							}
+						},
+						"url": {
+							"raw": "{{base_url}}/auth/register",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register"
+							]
+						}
+					},
+					"response": []
+				},
+				{
+					"name": "Register Funcionario",
+					"request": {
+						"method": "POST",
+						"header": [],
+						"url": {
+							"raw": "{{base_url}}/auth/register/funcionarios",
+							"host": [
+								"{{base_url}}"
+							],
+							"path": [
+								"auth",
+								"register",
+								"funcionarios"
+							]
+						}
 					},
 					"response": []
 				}

@@ -11,13 +11,13 @@ import br.com.eurofarma.infoQuik.repository.ListaDePresencaRepository;
 import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import java.util.List;
 import java.util.stream.Collectors;
 
-import static br.com.eurofarma.infoQuik.utils.CriptografiaUtils.criptografar;
 
 @Service
 public class FuncionarioService {
@@ -41,6 +41,7 @@ public class FuncionarioService {
 
     @Transactional
     public FuncionarioDTO insert(FuncionarioDTO dto) {
+        if(repository.existsByEmail(dto.getEmail()) || repository.existsByCpf(dto.getCpf())) return null;
         Funcionario entity = new Funcionario();
         copyDtoToEntity(dto, entity);
         entity = repository.save(entity);
@@ -79,16 +80,16 @@ public class FuncionarioService {
             throw new IllegalArgumentException("Produto inválido - id: " + id);
         }
     }
+
     private void copyDtoToEntity(FuncionarioDTO dto, Funcionario entity) {
         entity.setNome(dto.getNome());
         entity.setCpf(dto.getCpf());
         entity.setEmail(dto.getEmail());
-        try {
-            String senha = criptografar(dto.getSenha());
-            entity.setSenha(senha);// estou em duvida se dever te isso
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
+
+        String senhaCriptografada = new BCryptPasswordEncoder().encode(dto.getSenha());
+        entity.setSenha(senhaCriptografada);
+
+//        entity.setRole(dto.getRole());
 
         Departamento departamento = departamentoRepository.findById(dto.getDepartamentoId()).orElseThrow(
                 () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamentoId())
