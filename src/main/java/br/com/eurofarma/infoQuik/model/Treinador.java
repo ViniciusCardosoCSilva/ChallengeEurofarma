@@ -51,6 +51,7 @@ public class Treinador implements UserDetails {
 
     @Override
     public Collection<? extends GrantedAuthority> getAuthorities() {
+        if(role == UserRole.ADMIN) return List.of(new SimpleGrantedAuthority("ROLE_ADMIN"), new SimpleGrantedAuthority("ROLE_TREINADOR"), new SimpleGrantedAuthority("ROLE_FUNCIONARIO"));
         return List.of(new SimpleGrantedAuthority("ROLE_TREINADOR"), new SimpleGrantedAuthority("ROLE_FUNCIONARIO"));
     }
 

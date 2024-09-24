@@ -41,8 +41,8 @@ public class FuncionarioDTO {
     @Size(min = 6, message = "A senha deve ter no mínimo 6 caractéres")
     private String senha;
 
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+//    @Enumerated(EnumType.STRING)
+//    private UserRole role;
 
     private List<TreinamentoDTOSemListaDePresencaEListaDepartamentos> treinamentos = new ArrayList<>();
 
@@ -56,7 +56,7 @@ public class FuncionarioDTO {
         this.cpf = entity.getCpf();
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
-        this.role = entity.getRole();
+//        this.role = entity.getRole();
         this.departamentoId = entity.getDepartamento().getId();
         this.listaDePresencaList.addAll(entity.getListaDePresencaSet());
         entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTOSemListaDePresencaEListaDepartamentos(treinamento)));

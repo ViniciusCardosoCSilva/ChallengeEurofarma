@@ -89,7 +89,7 @@ public class FuncionarioService {
         String senhaCriptografada = new BCryptPasswordEncoder().encode(dto.getSenha());
         entity.setSenha(senhaCriptografada);
 
-        entity.setRole(dto.getRole());
+//        entity.setRole(dto.getRole());
 
         Departamento departamento = departamentoRepository.findById(dto.getDepartamentoId()).orElseThrow(
                 () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamentoId())

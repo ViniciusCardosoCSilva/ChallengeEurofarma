@@ -1,6 +1,7 @@
 package br.com.eurofarma.infoQuik.model;
 
 public enum UserRole {
+    ADMIN("admin"),
     TREINADOR("treinador"),
     FUNCIONARIO("funcionario");
 

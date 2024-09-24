@@ -40,9 +40,9 @@ public class Funcionario implements UserDetails {
     @Column(nullable = false)
     private String senha;
 
-    @Column(nullable = false)
-    @Enumerated(EnumType.STRING)
-    private UserRole role;
+//    @Column(nullable = false)
+//    @Enumerated(EnumType.STRING)
+//    private UserRole role;
 
 //    @OneToMany(mappedBy = "funcionario")
 //    private List<Treinamento> treinamentos = new ArrayList<>();
