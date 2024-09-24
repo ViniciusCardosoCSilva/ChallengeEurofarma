@@ -43,8 +43,14 @@ public class AuthenticationController {
         var usernamePassword = new UsernamePasswordAuthenticationToken(data.email(), data.password());
         var auth = this.authenticationManager.authenticate(usernamePassword);
 
-        var token = tokenService.generateToken((Treinador) auth.getPrincipal());
-        if(token == null) token = tokenService.generateTokenFuncionario((Funcionario) auth.getPrincipal());
+        String token;
+
+        try{
+            token = tokenService.generateToken((Treinador) auth.getPrincipal());
+
+        }catch (Exception e){
+            token = tokenService.generateTokenFuncionario((Funcionario) auth.getPrincipal());
+        }
 
         return ResponseEntity.ok(new LoginResponseDTO(token));
     }
