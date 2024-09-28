@@ -74,7 +74,11 @@ public class TagService {
 
     private void copyDtoToEntity(TagDTO dto, Tag entity) {
         entity.setNome(dto.getNome());
-        entity.setTreinamento(new Treinamento());
-        entity.getTreinamento().setId(dto.getTreinamentoId());
+        dto.getTreinamentos().forEach(treinamentoDTO -> {
+            Treinamento treinamento = treinamentoRepository.findById(treinamentoDTO.getId()).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso nao encontrado id: " + treinamentoDTO.getId())
+            );
+            entity.getTreinamentos().add(treinamento);
+        });
     }
 }
