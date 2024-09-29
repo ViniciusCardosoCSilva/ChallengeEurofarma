@@ -52,11 +52,14 @@ public class AuthenticationController {
 
         try{
             token = tokenService.generateToken((Treinador) auth.getPrincipal());
-            if(!token.isEmpty()){
-                role = UserRole.TREINADOR;
-                id = treinadorService.findIdByEmail(data.email());
+            id = treinadorService.findIdByEmail(data.email());
+            if(auth.getAuthorities().stream()
+                    .anyMatch(r -> r.getAuthority().equals("ROLE_ADMIN"))){
+                role = UserRole.ADMIN;
             }
-
+            else {
+                role = UserRole.TREINADOR;
+            }
         }catch (Exception e){
             token = tokenService.generateTokenFuncionario((Funcionario) auth.getPrincipal());
             id = funcionarioService.findIdByEmail(data.email());
