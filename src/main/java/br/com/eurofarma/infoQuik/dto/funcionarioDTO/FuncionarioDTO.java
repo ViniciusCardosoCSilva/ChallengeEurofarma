@@ -1,6 +1,8 @@
 package br.com.eurofarma.infoQuik.dto.funcionarioDTO;
 
+import br.com.eurofarma.infoQuik.dto.departamentoDTO.DepartamentoDTOSemListaFuncionariosETreinamentos;
 import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTOSemListaDePresencaEListaDepartamentos;
+import br.com.eurofarma.infoQuik.model.Departamento;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
 import br.com.eurofarma.infoQuik.model.UserRole;
@@ -46,7 +48,7 @@ public class FuncionarioDTO {
 
     private List<TreinamentoDTOSemListaDePresencaEListaDepartamentos> treinamentos = new ArrayList<>();
 
-    private Long departamentoId;
+    private DepartamentoDTOSemListaFuncionariosETreinamentos departamento;
 
     private List<ListaDePresenca> listaDePresencaList = new ArrayList<>();
 
@@ -57,11 +59,9 @@ public class FuncionarioDTO {
         this.email = entity.getEmail();
         this.senha = entity.getSenha();
 //        this.role = entity.getRole();
-        this.departamentoId = entity.getDepartamento().getId();
+        this.departamento = new DepartamentoDTOSemListaFuncionariosETreinamentos(entity.getDepartamento());
         this.listaDePresencaList.addAll(entity.getListaDePresencaSet());
         entity.getTreinamentos().forEach(treinamento -> treinamentos.add(new TreinamentoDTOSemListaDePresencaEListaDepartamentos(treinamento)));
 //        entity.getListaDePresencaSet().forEach(listaDePresenca -> listaDePresencaList.add(new ListaDePresencaDTO(listaDePresenca)));
     }
-
-
 }

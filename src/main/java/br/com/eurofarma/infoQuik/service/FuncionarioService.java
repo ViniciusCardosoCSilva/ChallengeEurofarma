@@ -57,6 +57,11 @@ public class FuncionarioService {
         return new FuncionarioDTO(funcionario);
     }
 
+    @Transactional(readOnly = true)
+    public Long findIdByEmail(String email) {
+        return repository.findIdByEmail(email);
+    }
+
     @Transactional
     public FuncionarioDTO update(Long id, FuncionarioDTO dto) {
         try {
@@ -91,8 +96,8 @@ public class FuncionarioService {
 
 //        entity.setRole(dto.getRole());
 
-        Departamento departamento = departamentoRepository.findById(dto.getDepartamentoId()).orElseThrow(
-                () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamentoId())
+        Departamento departamento = departamentoRepository.findById(dto.getDepartamento().getId()).orElseThrow(
+                () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamento().getId())
         );
         entity.setDepartamento(departamento);
 

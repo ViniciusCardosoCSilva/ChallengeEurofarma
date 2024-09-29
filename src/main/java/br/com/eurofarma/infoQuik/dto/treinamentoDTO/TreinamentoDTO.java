@@ -3,6 +3,7 @@ package br.com.eurofarma.infoQuik.dto.treinamentoDTO;
 import br.com.eurofarma.infoQuik.dto.departamentoDTO.DepartamentosDTOSemListaTreinamentos;
 import br.com.eurofarma.infoQuik.dto.listadepresencaDTO.ListaDePresencaDTO;
 import br.com.eurofarma.infoQuik.dto.tagDTO.TagDTO;
+import br.com.eurofarma.infoQuik.dto.treinadorDTO.TreinadorDTOSemTreinamentos;
 import br.com.eurofarma.infoQuik.model.*;
 import jakarta.persistence.EnumType;
 import jakarta.persistence.Enumerated;
@@ -47,7 +48,7 @@ public class TreinamentoDTO {
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private Long treinadorId;
+    private TreinadorDTOSemTreinamentos treinador;
 
     private List<TagDTO> tags = new ArrayList<>();
     private List<ListaDePresencaDTO> listaDePresencaList = new ArrayList<>();
@@ -62,7 +63,7 @@ public class TreinamentoDTO {
         this.corpo_texto = entity.getCorpo_texto();
         this.tipo = entity.getTipo();
         this.status = entity.getStatus();
-        this.treinadorId = entity.getTreinador().getId();
+        this.treinador = new TreinadorDTOSemTreinamentos(entity.getTreinador());
 
 //        this.tags.addAll(entity.getTags());
 //        this.funcionarios.addAll(entity.getFuncionarios());

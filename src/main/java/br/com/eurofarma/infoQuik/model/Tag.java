@@ -8,6 +8,9 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import lombok.Setter;
 
+import java.util.HashSet;
+import java.util.Set;
+
 @AllArgsConstructor
 @NoArgsConstructor
 @Getter
@@ -26,8 +29,7 @@ public class Tag {
     @Column(nullable = false)
     private String nome;
 
-    @ManyToOne
-    @JoinColumn(name = "treinamento_id", nullable = false)
-    private Treinamento treinamento;
+    @ManyToMany(mappedBy = "tags", fetch = FetchType.EAGER)
+    private Set<Treinamento> treinamentos = new HashSet<>();
 
 }

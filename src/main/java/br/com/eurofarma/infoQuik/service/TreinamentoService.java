@@ -1,6 +1,7 @@
 package br.com.eurofarma.infoQuik.service;
 
 import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTO;
+import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTOSemListaDePresencaEListaDepartamentos;
 import br.com.eurofarma.infoQuik.model.*;
 import br.com.eurofarma.infoQuik.repository.*;
 import jakarta.persistence.EntityNotFoundException;
@@ -72,19 +73,25 @@ public class TreinamentoService {
     }
     
     @Transactional
-    public TreinamentoDTO insert (TreinamentoDTO dto){
+    public TreinamentoDTOSemListaDePresencaEListaDepartamentos insert (TreinamentoDTOSemListaDePresencaEListaDepartamentos dto){
         Treinamento entity = new Treinamento();
-        copyDtoToEntity(dto, entity);
+
+        copyDtoToEntitySemLista(dto, entity);
+        entity.setStatus(Status.RASCUNHO);
         entity.setData_criacao(new Date());
         entity.setData_ultima_alteracao(new Date());
         if(entity.getStatus() == Status.PUBLICADO){
             if(!validarCampos(entity)){
                 entity.setStatus(Status.RASCUNHO);
+
             }
-            entity = repository.save(entity);
+
         }
-        return new TreinamentoDTO(entity);
+        entity = repository.save(entity);
+        return new TreinamentoDTOSemListaDePresencaEListaDepartamentos(entity);
     }
+
+
 
     @Transactional
     public TreinamentoDTO update(Long id, TreinamentoDTO dto){
@@ -138,7 +145,7 @@ public class TreinamentoService {
         entity.setData_ultima_alteracao(dto.getData_ultima_alteracao());
         entity.setStatus(dto.getStatus());
         entity.setTitulo(dto.getTitulo());
-        entity.setTreinador(treinadorRepository.findById(dto.getTreinadorId()).orElseThrow(
+        entity.setTreinador(treinadorRepository.findById(dto.getTreinador().getId()).orElseThrow(
                 () -> new IllegalArgumentException("Recurso não encontrado")
         ));
 
@@ -178,6 +185,25 @@ public class TreinamentoService {
 //            departamento.setId(departamentoDTO.getId());
 //            entity.getDepartamentos().add(departamento);
 //        });
+    }
+    private void copyDtoToEntitySemLista(TreinamentoDTOSemListaDePresencaEListaDepartamentos dto, Treinamento entity) {
+        entity.setCorpo_texto(dto.getCorpo_texto());
+        entity.setDescricao(dto.getDescricao());
+        entity.setTipo(dto.getTipo());
+        entity.setData_criacao(dto.getData_criacao());
+        entity.setData_ultima_alteracao(dto.getData_ultima_alteracao());
+        entity.setStatus(dto.getStatus());
+        entity.setTitulo(dto.getTitulo());
+        entity.setTreinador(treinadorRepository.findById(dto.getTreinador_id()).orElseThrow(
+                () -> new IllegalArgumentException("Recurso não encontrado")
+        ));
+
+        dto.getDepartamentos_id().forEach(departamento_id -> {
+            Departamento departamento = departamentoRepository.findById(departamento_id).orElseThrow(
+                    () -> new IllegalArgumentException("Recurso não encontrado")
+            );
+            entity.getDepartamentos().add(departamento);
+        });
     }
 
 

@@ -7,10 +7,13 @@ import br.com.eurofarma.infoQuik.repository.FuncionarioRepository;
 import br.com.eurofarma.infoQuik.repository.ListaDePresencaRepository;
 import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
+import org.apache.commons.lang3.RandomStringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
+import java.time.Instant;
+import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -35,6 +38,8 @@ public class ListaDePresencaService {
     public ListaDePresencaDTO insert(ListaDePresencaDTO dto) {
         ListaDePresenca entity = new ListaDePresenca();
         copyDtoToEntity(dto, entity);
+        entity.setData_criacao(Date.from(Instant.now()));
+        entity.setCodigo(RandomStringUtils.secure().nextAlphanumeric(6).toUpperCase());
         entity = repository.save(entity);
         return new ListaDePresencaDTO(entity);
     }

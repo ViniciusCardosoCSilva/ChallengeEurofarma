@@ -1,5 +1,6 @@
 package br.com.eurofarma.infoQuik.dto.listadepresencaDTO;
 
+import br.com.eurofarma.infoQuik.dto.funcionarioDTO.FuncionarioDTOSemListaTreinamentos;
 import br.com.eurofarma.infoQuik.model.Funcionario;
 import br.com.eurofarma.infoQuik.model.ListaDePresenca;
 import lombok.AllArgsConstructor;
@@ -23,14 +24,15 @@ public class ListaDePresencaDTO {
 
     private Long treinamentoId;
 
-    private List<Funcionario> funcionarios = new ArrayList<>();
+    private List<FuncionarioDTOSemListaTreinamentos> funcionarios = new ArrayList<>();
 
     public ListaDePresencaDTO(ListaDePresenca entity) {
         this.id = entity.getId();
         this.data_criacao = entity.getData_criacao();
         this.codigo = entity.getCodigo();
         this.treinamentoId = entity.getTreinamento().getId();
-        this.funcionarios.addAll(entity.getFuncionarios());
+        entity.getFuncionarios().forEach(funcionario -> funcionarios.add(new FuncionarioDTOSemListaTreinamentos(funcionario)));
+//        this.funcionarios.addAll(entity.getFuncionarios());
 //        entity.getFuncionarios().forEach(funcionario -> funcionarios.add(new FuncionarioDTO(funcionario)));
     }
 }

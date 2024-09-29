@@ -1,4 +1,6 @@
 package br.com.eurofarma.infoQuik.dto;
 
-public record LoginResponseDTO(String token) {
+import br.com.eurofarma.infoQuik.model.UserRole;
+
+public record LoginResponseDTO(String token, Long id, UserRole role) {
 }

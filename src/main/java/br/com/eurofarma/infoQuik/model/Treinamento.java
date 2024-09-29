@@ -46,7 +46,10 @@ public class Treinamento {
     @Column(nullable = false)
     private Status status;
 
-    @OneToMany(mappedBy = "treinamento", fetch = FetchType.EAGER)
+    @ManyToMany(fetch = FetchType.EAGER)
+    @JoinTable(name = "tb_treinamento_tag",
+            joinColumns = @JoinColumn(name = "treinamento_id"),
+            inverseJoinColumns = @JoinColumn(name = "tag_id"))
     private List<Tag> tags = new ArrayList<>();
 
     @ManyToOne
