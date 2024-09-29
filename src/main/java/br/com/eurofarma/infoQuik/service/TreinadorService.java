@@ -8,6 +8,7 @@ import br.com.eurofarma.infoQuik.repository.TreinamentoRepository;
 import jakarta.persistence.EntityNotFoundException;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.dao.DataIntegrityViolationException;
+import org.springframework.security.core.userdetails.UserDetails;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -46,6 +47,13 @@ public class TreinadorService {
                 () -> new IllegalArgumentException("Recurso inválido - " + id)
         );
         return new TreinadorDTO(treinador);
+    }
+
+    @Transactional(readOnly = true)
+    public Long findIdByEmail(String email) {
+
+        return repository.findIdByEmail(email);
+
     }
 
     @Transactional

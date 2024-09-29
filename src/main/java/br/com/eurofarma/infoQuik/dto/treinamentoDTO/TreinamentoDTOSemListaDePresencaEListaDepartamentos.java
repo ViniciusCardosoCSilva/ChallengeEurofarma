@@ -1,6 +1,7 @@
 package br.com.eurofarma.infoQuik.dto.treinamentoDTO;
 
 import br.com.eurofarma.infoQuik.dto.tagDTO.TagDTO;
+import br.com.eurofarma.infoQuik.model.Departamento;
 import br.com.eurofarma.infoQuik.model.Status;
 import br.com.eurofarma.infoQuik.model.Tipo;
 import br.com.eurofarma.infoQuik.model.Treinamento;
@@ -17,6 +18,7 @@ import lombok.Setter;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.stream.Collectors;
 
 @AllArgsConstructor
 @NoArgsConstructor
@@ -30,10 +32,8 @@ public class TreinamentoDTOSemListaDePresencaEListaDepartamentos {
     @Size(min = 5, message = "A descrição deve ter pelo menos 5 caracteres.")
     private String descricao;
 
-    @NotNull(message = "Data requerida.")
     private Date data_criacao;
 
-    @NotNull(message = "Data requerida.")
     private Date data_ultima_alteracao;
 
     @NotBlank(message = "Campo requerido")
@@ -43,13 +43,16 @@ public class TreinamentoDTOSemListaDePresencaEListaDepartamentos {
     @NotBlank(message = "Campo requerido")
     private String corpo_texto;
 
-    @NotBlank(message = "Campo requerido")
+    @NotNull(message = "Campo requerido")
     private Tipo tipo;
+
+    @NotNull
+    private List<Long> departamentos_id;
 
     @Enumerated(EnumType.STRING)
     private Status status;
 
-    private Long treinadorId;
+    private Long treinador_id;
 
     private List<TagDTO> tags = new ArrayList<>();
 
@@ -62,8 +65,11 @@ public class TreinamentoDTOSemListaDePresencaEListaDepartamentos {
         this.corpo_texto = entity.getCorpo_texto();
         this.tipo = entity.getTipo();
         this.status = entity.getStatus();
-        this.treinadorId = entity.getTreinador().getId();
-
+        this.treinador_id = entity.getTreinador().getId();
+        this.departamentos_id = entity.getDepartamentos()
+                .stream()
+                .map(Departamento::getId) // Assume que Departamento tem um método getId()
+                .collect(Collectors.toList());
         entity.getTags().forEach(tag -> tags.add(new TagDTO(tag)));
     }
 }

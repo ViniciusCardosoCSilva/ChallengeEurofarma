@@ -1,6 +1,7 @@
 package br.com.eurofarma.infoQuik.controller;
 
 import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTO;
+import br.com.eurofarma.infoQuik.dto.treinamentoDTO.TreinamentoDTOSemListaDePresencaEListaDepartamentos;
 import br.com.eurofarma.infoQuik.service.*;
 import jakarta.validation.Valid;
 import jakarta.validation.constraints.NotNull;
@@ -47,7 +48,7 @@ public class TreinamentoController {
     }
 
     @PostMapping
-    public ResponseEntity<TreinamentoDTO> insert(@RequestBody @Valid TreinamentoDTO dto) {
+    public ResponseEntity<TreinamentoDTOSemListaDePresencaEListaDepartamentos> insert(@RequestBody @Valid TreinamentoDTOSemListaDePresencaEListaDepartamentos dto) {
 
         dto = service.insert(dto);
         URI uri = ServletUriComponentsBuilder.fromCurrentRequestUri().path("/{id}").buildAndExpand(dto.getId()).toUri();

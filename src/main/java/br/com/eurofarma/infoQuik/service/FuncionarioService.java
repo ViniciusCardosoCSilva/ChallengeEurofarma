@@ -57,6 +57,11 @@ public class FuncionarioService {
         return new FuncionarioDTO(funcionario);
     }
 
+    @Transactional(readOnly = true)
+    public Long findIdByEmail(String email) {
+        return repository.findIdByEmail(email);
+    }
+
     @Transactional
     public FuncionarioDTO update(Long id, FuncionarioDTO dto) {
         try {
