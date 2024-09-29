@@ -138,7 +138,7 @@ public class TreinamentoService {
         entity.setData_ultima_alteracao(dto.getData_ultima_alteracao());
         entity.setStatus(dto.getStatus());
         entity.setTitulo(dto.getTitulo());
-        entity.setTreinador(treinadorRepository.findById(dto.getTreinadorId()).orElseThrow(
+        entity.setTreinador(treinadorRepository.findById(dto.getTreinador().getId()).orElseThrow(
                 () -> new IllegalArgumentException("Recurso não encontrado")
         ));
 

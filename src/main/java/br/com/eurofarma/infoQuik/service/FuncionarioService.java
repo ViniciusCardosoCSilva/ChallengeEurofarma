@@ -91,8 +91,8 @@ public class FuncionarioService {
 
 //        entity.setRole(dto.getRole());
 
-        Departamento departamento = departamentoRepository.findById(dto.getDepartamentoId()).orElseThrow(
-                () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamentoId())
+        Departamento departamento = departamentoRepository.findById(dto.getDepartamento().getId()).orElseThrow(
+                () -> new IllegalArgumentException("Recurso nao encontrado: id " + dto.getDepartamento().getId())
         );
         entity.setDepartamento(departamento);
 
